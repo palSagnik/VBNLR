@@ -26,7 +26,7 @@ fn spawn_app() -> String
             .expect("Failed to bind random port");
 
     let port = listener.local_addr().unwrap().port();
-    let server = zero2prod::run(listener).expect("Failed to bind address");
+    let server = zero2prod::startup::run(listener).expect("Failed to bind address");
 
     //Launching the server as a background task
     //But as we do not need it, we will assign the handler to _

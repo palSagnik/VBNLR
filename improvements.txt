@@ -1,0 +1,2 @@
+Database:
+- When our mailing list becomes popular, database constraints like UNIQUE takes up too much space.

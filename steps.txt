@@ -1,4 +1,0 @@
-• Make a change;
-• Compile the application;
-• Run tests;
-• Run the application.
