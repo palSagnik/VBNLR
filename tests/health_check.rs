@@ -34,10 +34,18 @@ fn spawn_app() -> String
     format!("http://127.0.0.1:{}", port)
 }
 
+use sqlx::{PgConnection, Connection};
+use zero2prod::configuration::get_configuration;
+
 #[tokio::test]
 async fn subscriber_200_return_for_valid()
 {
     let app_address = spawn_app();
+    let configuration = get_configuration().expect("Failed to read configuration.");
+    let connection_string = configuration.database.connection_string();
+    let connection = PgConnection::connect(&connection_string)
+            .await
+            .expect("Failed to connect to Postgres");
     let client = reqwest::Client::new();
 
     //Act
