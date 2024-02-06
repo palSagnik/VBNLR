@@ -1,14 +1,14 @@
 use std::net::TcpListener;
 use zero2prod::startup::run;
 use zero2prod::configuration::get_configuration;
-use sqlx::{Connection, PgConnection};
+use sqlx::PgPool;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()>
 {
     // Panic if not able to read configuration
     let configuration = get_configuration().expect("Failed to read configuration.");
-    let connection  = PgConnection::connect(&configuration.database.connection_string())
+    let connection_pool  = PgPool::connect(&configuration.database.connection_string())
         .await
         .expect("Failed to connect to Postgres");
     // No more hardcode ports
@@ -17,5 +17,5 @@ async fn main() -> std::io::Result<()>
 
     let listener = TcpListener::bind(address)
         .expect("Failed to bind random port");
-    run(listener, connection)?.await
+    run(listener, connection_pool)?.await
 }
